@@ -1,0 +1,3 @@
+scenario,customers,cashiers,queue_capacity,served,average_wait_seconds,runtime_seconds,hourly_labor_cost_usd
+Understaffed,20,1,5,20,9.399,20.518,18.00
+Overstaffed,20,10,5,20,0.276,2.750,180.00
