@@ -6,7 +6,7 @@ A Java producer-consumer lab based on Costco checkout lines. `Customer` threads 
 
 - **Jaskaran Bhogal** — created the repository, implemented `Customer` and `Cashier`, and completed the separate understaffed/overstaffed experiment runner and measurements.
 - **Dev Mondal** — implemented `CheckoutQueue`, helped integrate the main simulation, and documented the three original staffing-comparison runs.
-- The README names the two confirmed contributors. If a third teammate participated, add their name and their actual contribution before submission.
+- This project was completed by a two-person team.
 
 ## Build and run
 
