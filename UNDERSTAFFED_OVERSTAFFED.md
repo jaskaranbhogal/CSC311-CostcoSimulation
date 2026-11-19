@@ -22,4 +22,4 @@ Both runs completed successfully with 20 of 20 customers served. One cashier cau
 - The runs simulate a burst of 20 customers, not evenly spaced arrivals at 60 customers per hour.
 - Results vary on each run; the table and CSV represent one run each, not statistical averages across repeated trials.
 - The $18/hour amount is a staffing wage assumption, not the actual expense of these seconds-long runs.
-- The 3-cashier and queue-size experiments belong to the other group members and are deliberately not implemented here.
+- This file covers only the two individual staffing-extremes experiments. The team-wide three-cashier comparison, both additional queue-capacity experiments, and the 60-customers/hour recommendation are documented in [costco-staffing-test-results.md](costco-staffing-test-results.md); the queue-size runner is [src/ex2/QueueSizeExperiments.java](src/ex2/QueueSizeExperiments.java).
