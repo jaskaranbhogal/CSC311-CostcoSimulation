@@ -1,16 +1,16 @@
 # Costco Checkout Simulation
 
-This project turns the producer-consumer example from class into a simple Costco checkout simulation. Customer threads shop and join a shared line. Cashier threads take customers from that line and serve them. The queue uses Java's `ArrayBlockingQueue` so the threads can safely share customer IDs.
+A Java producer-consumer lab based on Costco checkout lines. `Customer` threads finish shopping and join a shared `ArrayBlockingQueue`; `Cashier` threads remove customer IDs and simulate checkouts. The bounded queue handles thread coordination without busy-waiting.
 
-## Team and contributions
+## Team and individual contributions
 
-- **Dev Mondal** — worked on `CheckoutQueue` and connected the simulation pieces and results.
-- **Jaskaran Bhogal** — set up the repository and worked on the `Customer` and `Cashier` classes.
+- **Jaskaran Bhogal** — created the repository, implemented `Customer` and `Cashier`, and completed the separate understaffed/overstaffed experiment runner and measurements.
+- **Dev Mondal** — implemented `CheckoutQueue`, helped integrate the main simulation, and documented the three original staffing-comparison runs.
+- The README names the two confirmed contributors. If a third teammate participated, add their name and their actual contribution before submission.
 
+## Build and run
 
-## Run it
-
-From the project folder, compile the Java files and start the simulation:
+From the project root, with Java installed:
 
 ```bash
 mkdir -p out
@@ -18,15 +18,38 @@ javac -d out src/ex2/*.java
 java -cp out ex2.CostcoSimulation
 ```
 
-Enter the number of cashiers, queue capacity, and customers when prompted. The program will print the results after all customers have been served.
+Enter the number of customers, cashiers, and queue capacity when prompted. The program reports customers served, average wait, total runtime, and hourly labor cost at $18/hour per cashier.
 
-## How the threads work
+## Five lab experiments
 
-- A `Customer` thread simulates shopping, records when the customer is ready, and puts the customer's ID in the checkout queue.
-- A `Cashier` thread waits for the next ID, measures the customer's wait, and simulates the checkout.
-- `CheckoutQueue` is backed by an `ArrayBlockingQueue`. A customer waits if the bounded queue is full, and a cashier waits if the queue is empty.
-- After the customers finish joining the line, the simulation adds a stop ID for each cashier so the cashier threads can finish after serving everyone.
+The results report covers **five runs**, all with 20 customers:
 
-## Experiments
+| Experiment | Cashiers | Queue capacity |
+| --- | ---: | ---: |
+| Understaffed | 1 | 20 |
+| Three-cashier staffing | 3 | 20 |
+| Overstaffed | 10 | 20 |
+| Smaller queue | 3 | 5 |
+| Larger queue | 3 | 10 |
 
-Three scenarios were tested with different queue sizes and customer counts. The results are in [costco-staffing-test-results.md ](costco-staffing-test-results.md) and [UNDERSTAFFED_OVERSTAFFED.md](UNDERSTAFFED_OVERSTAFFED.md).
+To repeat the three staffing scenarios, run the interactive `CostcoSimulation` three times with the table values. The other two can be run automatically:
+
+```bash
+# Individual experiments: 1 and 10 cashiers, queue capacity 5
+java -cp out ex2.StaffingExperiments
+
+# Queue-size experiments: 3 cashiers, queue capacities 5 and 10
+java -cp out ex2.QueueSizeExperiments
+```
+
+The experiment programs each write their measurements to CSV in the current directory. Randomized shopping and checkout delays mean results vary between runs.
+
+See [five experiment results and staffing recommendation](costco-staffing-test-results.md), [queue-size CSV](queue_size_results.csv), and [understaffed/overstaffed individual contribution](UNDERSTAFFED_OVERSTAFFED.md). The report recommends three cashiers as a starting point for 60 customers/hour **under a stated hypothetical two-minute checkout assumption**, not as a claim proven by this accelerated simulation.
+
+## Thread synchronization
+
+`CheckoutQueue` uses `ArrayBlockingQueue`: customers block when it is full and cashiers block when it is empty. After every customer has enqueued, the runner adds a stop marker per cashier. It then waits for all cashiers to exit before calculating the results. Customer-ready timestamps are recorded before queue insertion, so reported waiting includes time blocked by a full queue.
+
+## Submission
+
+Every group member should provide the URL of their own GitHub repository/fork in Brightspace, per the assignment instructions. The original repository owner can submit this repository URL; teammates using separate forks should submit their fork URLs. Confirm that each contributor's work is reflected accurately above.
